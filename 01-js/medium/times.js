@@ -9,5 +9,20 @@ There is no automated test for this one, this is more for you to understand time
 */
 
 function calculateTime(n) {
-    return 0.01;
+    const before = new Date().getTime();
+     let res = 0;
+    for(let i = 1 ;i <= n ;i++){
+            res += i;
+    }
+    const after = new Date().getTime();
+    
+    let totalTime = after-before;
+    console.log(totalTime);
+    return totalTime ;
 }
+
+calculateTime(1e5);
+calculateTime(1e6);
+calculateTime(1e7);
+calculateTime(1e9);
+calculateTime(100000000000000); // takes alot of time increases exponentially
