@@ -41,9 +41,85 @@
  */
   const express = require('express');
   const bodyParser = require('body-parser');
+  const {  v4: uuidv4 } = require('uuid');
+
   
   const app = express();
   
   app.use(bodyParser.json());
+
+ 
+
+  let todos = [];
+  
+  app.get('/todos' , (req,res) => {
+      res.json(todos);
+  })
+
+  app.get('/todos/:id' , (req,res) => {
+    const id = Number(req.params.id);
+    let flag = false;
+    let result = {};
+    for(let todo of todos){
+      if(todo.id == id){
+        flag = true;
+        result = todo;
+      }
+    }
+
+    if(flag == true){
+    res.json(result);}
+
+    else{
+    res.sendStatus(404);}
+  
+})
+
+ app.post( '/todos' , (req,res) => {
+    const temp = req.body ;
+  
+    const newTodo = {
+      title : temp["title"],
+      description: temp["description"],
+      // id: uuidv4()
+      id: Math.floor(Math.random() * 1000000)
+    }
+
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
+ })
+
+ app.put('/todos/:id' , (req,res) => {
+  const id = Number(req.params.id)
+  const todoIndex = todos.findIndex( ele => ele.id === id )
+
+   if(todoIndex === -1){
+    res.sendStatus(404);
+   }
+   else{
+      todos[todoIndex].description = req.body.description,
+      todos[todoIndex].title = req.body.title
+      res.json(todos[todoIndex]);
+   }
+ })
+
+ app.delete('/todos/:id' , (req,res) => {
+  const id = Number(req.params.id)
+  const todoIndex = todos.findIndex( ele => ele.id === id )
+
+   if(todoIndex === -1){
+    res.sendStatus(404);
+   }
+   else{
+      todos.splice(todoIndex,1);
+      res.sendStatus(200);
+   }
+ })
+
+ app.use((req, res) => {
+  res.sendStatus(404);
+});
+
+  
   
   module.exports = app;
