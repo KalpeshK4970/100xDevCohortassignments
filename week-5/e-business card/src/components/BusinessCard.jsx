@@ -7,9 +7,9 @@ export function BusinessCard({cardDetails}){
         <p>{cardDetails.description}</p> 
         <h2>Interests</h2> 
         <ul>
-           {cardDetails.interests.map((interest,index) => (
-            <li key={index}> {interest}</li>
-           ))}
+           {cardDetails.interests.map((interest,index) => {
+           return  <li key={index}> {interest}</li>
+           })}
         </ul>
         <br />
         <button className="custom-button"
